@@ -1,0 +1,68 @@
+plugins:
+  - rubocop-rake
+  - rubocop-minitest
+  - rubocop-performance
+
+AllCops:
+  TargetRubyVersion: 3.1
+  NewCops: enable
+
+Naming/MethodParameterName:
+  Enabled: false
+
+Style/Documentation:
+  # Skips checking to make sure top level modules / classes have a comment.
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/NumericLiterals:
+  Enabled: false
+
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+
+Layout/LineLength:
+  Max: 150
+
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
+Layout/IndentationConsistency:
+  EnforcedStyle: indented_internal_methods
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Metrics/AbcSize:
+  Max: 35
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
+Metrics/BlockLength:
+  Exclude:
+    - '**/*_test.rb'
+
+Metrics/ModuleLength:
+  Exclude:
+    - '**/*.rake'
+    - 'test/**/*_test.rb'
+
+Performance/MethodObjectAsBlock:
+  Enabled: false
+
+Performance/TimesMap:
+  Enabled: false
