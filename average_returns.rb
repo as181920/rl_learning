@@ -21,7 +21,7 @@ class AverageReturns
     @score_log = []
   end
 
-  def calc_returns(_values, rewards:, states:)
+  def calc_returns(rewards:, states:)
     state_count = Torch.zeros(16)
     state_returns = Torch.zeros(16)
     reward = 0
@@ -69,7 +69,7 @@ class AverageReturns
         break if (state == terminal_state) || (steps >= 30)
       end
 
-      returns_log.append(calc_returns(state_values, rewards: reward_log, states: state_log))
+      returns_log.append(calc_returns(rewards: reward_log, states: state_log))
       @state_values = Torch.mean(Torch.stack(returns_log), dim: 0)
 
       score_log.append(run_agent[0])
