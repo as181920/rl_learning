@@ -9,6 +9,7 @@ require "vips"
 module Utility
   module_function
 
+  DELTA = 1e-10
   VIRIDIS_COLORS = JSON.load_file(File.expand_path("cmap_viridis.json", __dir__))
 
   def softmax_from_scratch(x)
@@ -59,11 +60,13 @@ module Utility
   def ansi_plot(image_array, title: nil, padding: 0)
     puts Rainbow(title).bright.aqua if title.present?
 
-    puts TTY::Table.new(image_array.to_a).render \
-      :unicode,
-      border: { separator: :each_row },
-      padding:,
-      filter: ->(value, _row_index, _col_index) { Rainbow(value.to_s).bg(*color_map(value)).color(:black) }
+    scale = (image_array.max - image_array.min)
+    filter = proc do |value, _row_index, _col_index|
+      color = color_map(value.to_f / (scale + DELTA))
+      Rainbow(value.to_s).bg(*color).color(:black)
+    end
+
+    puts TTY::Table.new(image_array.to_a).render(:unicode, border: { separator: :each_row }, padding:, filter:)
   end
 
   def colorize(text = "  ", r: 245, g: 245, b: 245)
