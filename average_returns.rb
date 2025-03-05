@@ -4,10 +4,11 @@ require_relative "common/global"
 require_relative "common/utility"
 
 class AverageReturns
+  ALPHA = 0.005
+
   state_values = Torch.zeros(16)
   terminal_state = 3
 
-  alpha = 0.005
   score_log = []
 
   def initialize(state_transitions:, rewards:)
@@ -17,7 +18,7 @@ class AverageReturns
   end
 end
 
-state_transitions = CSV.read("./state_transitions.csv", converters: :numeric)
+state_transitions = CSV.read(File.expand_path("state_transitions.csv", __dir__), converters: :numeric)
 Utility.table_print(state_transitions, title: "state_transitions data table")
 
 rewards = Torch.zeros(16).reshape(4, 4)

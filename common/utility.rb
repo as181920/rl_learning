@@ -1,4 +1,5 @@
 require "active_support/all"
+require "json"
 require "matplotlib/pyplot"
 require "rainbow"
 require "torch-rb"
@@ -7,6 +8,8 @@ require "vips"
 
 module Utility
   module_function
+
+  VIRIDIS_COLORS = JSON.load_file(File.expand_path("cmap_viridis.json", __dir__))
 
   def softmax_from_scratch(x)
     x -= x.max(0)[0]
@@ -45,7 +48,8 @@ module Utility
     image_array.each do |row|
       row.each do |cell|
         # print cell.nonzero? ? colorize(r: 255, g: 170, b: 51) : colorize
-        color = cell.nonzero? ? [(cell.to_f * 255).clamp(0, 255), 0, 0] : [245, 245, 245]
+        # color = cell.nonzero? ? [(cell.to_f * 255).clamp(0, 255), 0, 0] : [245, 245, 245]
+        color = color_map(cell)
         print Rainbow(filler).color(*color)
       end
       print "\n"
@@ -54,5 +58,10 @@ module Utility
 
   def colorize(text = "  ", r: 245, g: 245, b: 245)
     "\e[48;2;#{r};#{g};#{b}m#{text}\e[0m"
+  end
+
+  def color_map(value, colormap: VIRIDIS_COLORS)
+    idx = (value.to_f.clamp(0, 1) * (colormap.size - 1)).to_i
+    colormap[idx] # returns [r, g, b]
   end
 end
