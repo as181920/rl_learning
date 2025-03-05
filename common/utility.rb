@@ -1,6 +1,8 @@
 require "active_support/all"
 require "matplotlib/pyplot"
+require "rainbow"
 require "torch-rb"
+require "tty-table"
 require "vips"
 
 module Utility
@@ -13,6 +15,11 @@ module Utility
 
   def softmax(x, dim: 0)
     x.softmax(dim:)
+  end
+
+  def table_print(table_data, title: nil)
+    puts Rainbow(title).bright.aqua if title.present?
+    puts TTY::Table.new(table_data).render(:unicode, border: { separator: :each_row })
   end
 
   def plot(x, y, ylim: [-0.1, 1.1], title: nil)
@@ -29,5 +36,23 @@ module Utility
     plt.title(title) if title.present?
     plt.ylim(*ylim) if ylim.present?
     plt.show
+  end
+
+  def ansi_plot(image_array, title: nil)
+    puts Rainbow(title).bright.aqua if title.present?
+
+    filler = "⬛" # "  "
+    image_array.each do |row|
+      row.each do |cell|
+        # print cell.nonzero? ? colorize(r: 255, g: 170, b: 51) : colorize
+        color = cell.nonzero? ? [(cell.to_f * 255).clamp(0, 255), 0, 0] : [245, 245, 245]
+        print Rainbow(filler).color(*color)
+      end
+      print "\n"
+    end
+  end
+
+  def colorize(text = "  ", r: 245, g: 245, b: 245)
+    "\e[48;2;#{r};#{g};#{b}m#{text}\e[0m"
   end
 end
