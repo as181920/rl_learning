@@ -25,7 +25,7 @@ module Utility
     puts TTY::Table.new(table_data).render(:unicode, border: { separator: :each_row })
   end
 
-  def plot(x, y, ylim: [-0.1, 1.1], title: nil)
+  def pyplot(x, y, ylim: [-0.1, 1.1], title: nil)
     plt = Matplotlib::Pyplot
     plt.plot(x.to_a, y.to_a)
     plt.title(title) if title.present?
@@ -33,7 +33,7 @@ module Utility
     plt.show
   end
 
-  def implot(image_array, ylim: [], title: nil)
+  def imshow(image_array, ylim: [], title: nil)
     plt = Matplotlib::Pyplot
     plt.imshow(image_array)
     plt.title(title) if title.present?
@@ -41,7 +41,7 @@ module Utility
     plt.show
   end
 
-  def ansi_plot(image_array, title: nil)
+  def block_plot(image_array, title: nil)
     puts Rainbow(title).bright.aqua if title.present?
 
     filler = "⬛" # "  "
@@ -54,6 +54,16 @@ module Utility
       end
       print "\n"
     end
+  end
+
+  def ansi_plot(image_array, title: nil, padding: 0)
+    puts Rainbow(title).bright.aqua if title.present?
+
+    puts TTY::Table.new(image_array.to_a).render \
+      :unicode,
+      border: { separator: :each_row },
+      padding:,
+      filter: ->(value, _row_index, _col_index) { Rainbow(value.to_s).bg(*color_map(value)).color(:black) }
   end
 
   def colorize(text = "  ", r: 245, g: 245, b: 245)
