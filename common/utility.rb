@@ -63,7 +63,7 @@ module Utility
     end
   end
 
-  def ansi_plot(image_array, title: nil, padding: 0)
+  def table_plot(image_array, title: nil, padding: 0)
     puts Rainbow(title).bright.aqua if title.present?
 
     filter = proc do |value, _row_index, _col_index|
@@ -74,13 +74,31 @@ module Utility
     puts TTY::Table.new(image_array.to_a).render(:unicode, border: { separator: :each_row }, padding:, filter:)
   end
 
-  def line_plot() # ascii_charts
+  # data_array: [[x_1, value_1], [x_1, value_2], ..., [x_n, value_n]]
+  def line_plot(data_array, title: nil)
+    puts Rainbow(title).bright.aqua if title.present?
+
+    debugger
+    puts AsciiCharts::Cartesian.new(data_array).draw
   end
 
-  def column_plot() # ascii_charts
+  def column_plot(data_array, title: nil)
+    puts Rainbow(title).bright.aqua if title.present?
+
+    puts AsciiCharts::Cartesian.new(data_array, bar: true, hide_zero: true).draw
   end
 
-  def pie_plog() # tty-pie
+  def pie_plot(
+    data = [
+      { name: "filler1", value: 309, color: :bright_yellow, fill: "¥" },
+      { name: "filler2", value: 382, color: :bright_green, fill: "$" },
+      { name: "filler2", value: 309, color: :bright_magenta, fill: "€" }
+    ],
+    title: nil
+  )
+    puts Rainbow(title).bright.aqua if title.present?
+
+    puts TTY::Pie.new(data:)
   end
 
   def colorize(text = "  ", r: 245, g: 245, b: 245)

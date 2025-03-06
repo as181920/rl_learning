@@ -88,11 +88,12 @@ Utility.table_print(state_transitions, title: "state_transitions data table")
 
 rewards = Torch.zeros(16)
 rewards[3] = 1.0
-Utility.ansi_plot(rewards.type(:int).reshape(4, 4), title: "rewards", padding: [0, 1])
+Utility.table_plot(rewards.type(:int).reshape(4, 4), title: "rewards", padding: [0, 1])
 
 ar = AverageReturns.new(state_transitions:, rewards:)
 ar.perform
 
 # plot data
-Utility.ansi_plot(ar.state_values.reshape(4, 4), title: "rewards")
+Utility.table_plot(ar.state_values.reshape(4, 4), title: "rewards")
+# Utility.line_plot((1..ar.score_log.length).zip(ar.score_log.map(&:to_f)))
 Utility.pyplot(Array(0..ar.score_log.length.pred), ar.score_log.map(&:to_f))
