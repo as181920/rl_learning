@@ -4,6 +4,7 @@ require "matplotlib/pyplot"
 require "rainbow"
 require "torch-rb"
 require "tty-logger"
+require "tty-spinner"
 require "tty-table"
 require "vips"
 

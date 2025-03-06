@@ -156,9 +156,12 @@ GEM
     torch-rb (0.18.0)
       rice (>= 4.3.3)
     tty-color (0.6.0)
+    tty-cursor (0.7.1)
     tty-logger (0.6.0)
       pastel (~> 0.8)
     tty-screen (0.8.2)
+    tty-spinner (0.9.3)
+      tty-cursor (~> 0.7)
     tty-table (0.12.0)
       pastel (~> 0.8)
       strings (~> 0.2.0)
@@ -196,6 +199,7 @@ DEPENDENCIES
   ruby-vips
   torch-rb
   tty-logger
+  tty-spinner
   tty-table (~> 0.12)
 
 BUNDLED WITH
