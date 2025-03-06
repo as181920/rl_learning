@@ -3,6 +3,7 @@ require "json"
 require "matplotlib/pyplot"
 require "rainbow"
 require "torch-rb"
+require "tty-logger"
 require "tty-table"
 require "vips"
 
@@ -11,6 +12,8 @@ module Utility
 
   DELTA = 1e-10
   VIRIDIS_COLORS = JSON.load_file(File.expand_path("cmap_viridis.json", __dir__))
+
+  Logger = TTY::Logger.new
 
   def softmax_from_scratch(x)
     x -= x.max(0)[0]
@@ -66,6 +69,15 @@ module Utility
     end
 
     puts TTY::Table.new(image_array.to_a).render(:unicode, border: { separator: :each_row }, padding:, filter:)
+  end
+
+  def line_plot() # ascii_charts
+  end
+
+  def column_plot() # ascii_charts
+  end
+
+  def pie_plog() # tty-pie
   end
 
   def colorize(text = "  ", r: 245, g: 245, b: 245)
