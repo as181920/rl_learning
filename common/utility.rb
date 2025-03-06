@@ -78,7 +78,6 @@ module Utility
   def line_plot(data_array, title: nil)
     puts Rainbow(title).bright.aqua if title.present?
 
-    debugger
     puts AsciiCharts::Cartesian.new(data_array).draw
   end
 
