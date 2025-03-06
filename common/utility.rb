@@ -47,10 +47,10 @@ module Utility
 
     filler = "⬛" # "  "
     image_array.each do |row|
-      row.each do |cell|
-        # print cell.nonzero? ? colorize(r: 255, g: 170, b: 51) : colorize
-        # color = cell.nonzero? ? [(cell.to_f * 255).clamp(0, 255), 0, 0] : [245, 245, 245]
-        color = color_map(cell)
+      row.each do |value|
+        # print value.nonzero? ? colorize(r: 255, g: 170, b: 51) : colorize
+        # color = value.nonzero? ? [(value.to_f * 255).clamp(0, 255), 0, 0] : [245, 245, 245]
+        color = color_map((value.to_f - image_array.min) / (image_array.max - image_array.min + DELTA))
         print Rainbow(filler).color(*color)
       end
       print "\n"
@@ -60,9 +60,8 @@ module Utility
   def ansi_plot(image_array, title: nil, padding: 0)
     puts Rainbow(title).bright.aqua if title.present?
 
-    scale = (image_array.max - image_array.min)
     filter = proc do |value, _row_index, _col_index|
-      color = color_map(value.to_f / (scale + DELTA))
+      color = color_map((value.to_f - image_array.min) / (image_array.max - image_array.min + DELTA))
       Rainbow(value.to_s).bg(*color).color(:black)
     end
 
