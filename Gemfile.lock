@@ -15,6 +15,7 @@ GEM
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
     ansi (1.5.0)
+    ascii_charts (0.9.1)
     ast (2.4.2)
     base64 (0.2.0)
     benchmark (0.4.0)
@@ -159,6 +160,9 @@ GEM
     tty-cursor (0.7.1)
     tty-logger (0.6.0)
       pastel (~> 0.8)
+    tty-pie (0.4.0)
+      pastel (~> 0.8)
+      tty-cursor (~> 0.7)
     tty-screen (0.8.2)
     tty-spinner (0.9.3)
       tty-cursor (~> 0.7)
@@ -177,6 +181,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport
+  ascii_charts
   bundler
   chunky_png
   debug
@@ -199,6 +204,7 @@ DEPENDENCIES
   ruby-vips
   torch-rb
   tty-logger
+  tty-pie
   tty-spinner
   tty-table (~> 0.12)
 
