@@ -3,7 +3,8 @@ require "torch-rb"
 require_relative "common/global"
 require_relative "common/utility"
 
-class AverageReturns
+class MonteCarlo
+  ALPHA = 0.005
   GAMMA = 0.9
   DELTA = 1e-10
 
@@ -20,18 +21,14 @@ class AverageReturns
     @score_log = []
   end
 
-  def calc_returns(rewards:, states:)
-    state_count = Torch.zeros(16)
-    state_returns = Torch.zeros(16)
+  def monte_carlo_update(rewards:, states:)
+    returns = []
     reward = 0
     rewards.length.pred.downto(0) do |idx|
       reward = rewards[idx] + (GAMMA * reward)
-      state_returns[states[idx]] += reward
-      state_count[states[idx]] += 1
-      # print(states[idx])
+      returns.prepend(reward)
     end
-
-    state_returns / (state_count + DELTA)
+    state_values[states] = state_values[states] + (ALPHA * (Torch.stack(returns) - state_values[states]))
   end
 
   def test_agent # rubocop:disable Metrics/MethodLength
@@ -52,9 +49,7 @@ class AverageReturns
   end
 
   def perform # rubocop:disable Metrics/MethodLength
-    returns_log = []
-
-    100.times do
+    1000.times do
       state = start_state
       state_log = [state]
       reward_log = [rewards[state]]
@@ -68,8 +63,7 @@ class AverageReturns
         break if (state == terminal_state) || (steps >= 30)
       end
 
-      returns_log.append(calc_returns(rewards: reward_log, states: state_log))
-      @state_values = Torch.mean(Torch.stack(returns_log), dim: 0)
+      monte_carlo_update(rewards: reward_log, states: state_log)
 
       score_log.append(test_agent[0])
     end
@@ -89,16 +83,15 @@ rewards = Torch.zeros(16)
 rewards[3] = 1.0
 Utility.table_plot(rewards.type(:int).reshape(4, 4), title: "rewards", padding: [0, 1])
 
-ar = AverageReturns.new(state_transitions:, rewards:)
-ar.perform
+mc = MonteCarlo.new(state_transitions:, rewards:)
+mc.perform
 
 # plot data
-Utility.table_plot(ar.state_values.reshape(4, 4), title: "state values")
-# Utility.line_plot((1..ar.score_log.length).zip(ar.score_log.map(&:to_f)))
-Utility.pyplot(Array(0..ar.score_log.length.pred), ar.score_log.map(&:to_f))
+Utility.table_plot(mc.state_values.reshape(4, 4), title: "state values")
+Utility.pyplot(Array(0..mc.score_log.length.pred), mc.score_log.map(&:to_f))
 
 # test agent
-_, state_log = ar.test_agent
+_, state_log = mc.test_agent
 state_view = Torch.zeros(16)
 state_view[state_log] = 1
 Utility.block_plot(state_view.type(:int).reshape(4, 4), title: "state log")
