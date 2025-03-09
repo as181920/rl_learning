@@ -3,8 +3,9 @@ require "torch-rb"
 require_relative "common/global"
 require_relative "common/utility"
 
-class TemporalDifference
+class TdEGreedy
   ALPHA = 0.02
+  EPSILON = 0.3
   GAMMA = 0.9
   DELTA = 1e-10
 
@@ -55,7 +56,8 @@ class TemporalDifference
       steps = 0
 
       loop do
-        state = transit_state(state)
+        action = rand >= EPSILON ? Torch.argmax(state_values[state_transitions[state]]).to_i : rand(4)
+        state = transit_state(state, action:)
         steps = steps.succ
         state_log.append(state)
         reward_log.append(rewards[state])
@@ -85,7 +87,7 @@ rewards[11] = -1
 rewards[10] = -1
 Utility.table_plot(rewards.type(:int).reshape(4, 4), title: "rewards", padding: [0, 1])
 
-mc = TemporalDifference.new(state_transitions:, rewards:)
+mc = TdEGreedy.new(state_transitions:, rewards:)
 mc.perform
 
 # plot data
