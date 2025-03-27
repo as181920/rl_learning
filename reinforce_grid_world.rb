@@ -73,6 +73,7 @@ class ReinforceGridWorld
       state_returns = calc_returns(rewards: reward_log)
       advantage = Torch.tensor(state_returns)
       state_action_logprobs[state_log, action_log] = state_action_logprobs[state_log, action_log] + (ALPHA * advantage)
+      @state_action_logprobs = Torch.clip(state_action_logprobs, -5, 5)
 
       score_log.append(test_agent[0])
     end
@@ -90,9 +91,9 @@ Utility.table_print(state_transitions, title: "state_transitions data table")
 
 rewards = Torch.zeros(16)
 rewards[3] = 10
-rewards[2] = -1
-rewards[11] = -1
-rewards[10] = -1
+rewards[2] = -5
+rewards[11] = -5
+rewards[10] = -5
 Utility.table_plot(rewards.type(:int).reshape(4, 4), title: "rewards", padding: [0, 1])
 
 model = ReinforceGridWorld.new(state_transitions:, rewards:)
