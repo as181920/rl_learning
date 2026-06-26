@@ -95,7 +95,6 @@ ar.perform
 
 # plot data
 Utility.table_plot(ar.state_values.reshape(4, 4), title: "state values")
-# Utility.line_plot((1..ar.score_log.length).zip(ar.score_log.map(&:to_f)))
 puts UnicodePlot.lineplot(
   Array(0..ar.score_log.length.pred),
   ar.score_log.map(&:to_f),

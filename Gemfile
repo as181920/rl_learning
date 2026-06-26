@@ -3,7 +3,6 @@
 source "https://rubygems.org"
 
 gem "activesupport"
-gem "ascii_charts"
 gem "bundler"
 gem "chunky_png"
 gem "csv"

@@ -15,7 +15,6 @@ GEM
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
     ansi (1.5.0)
-    ascii_charts (0.9.1)
     ast (2.4.2)
     base64 (0.2.0)
     benchmark (0.4.0)
@@ -185,7 +184,6 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport
-  ascii_charts
   bundler
   chunky_png
   csv

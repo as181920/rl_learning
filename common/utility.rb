@@ -1,5 +1,4 @@
 require "active_support/all"
-require "ascii_charts"
 require "json"
 require "rainbow"
 require "torch-rb"
@@ -73,19 +72,6 @@ module Utility
     end
 
     puts TTY::Table.new(image_array.to_a).render(:unicode, border: { separator: :each_row }, padding:, filter:)
-  end
-
-  # data_array: [[x_1, value_1], [x_1, value_2], ..., [x_n, value_n]]
-  def line_plot(data_array, title: nil)
-    puts Rainbow(title).bright.aqua if title.present?
-
-    puts AsciiCharts::Cartesian.new(data_array).draw
-  end
-
-  def column_plot(data_array, title: nil)
-    puts Rainbow(title).bright.aqua if title.present?
-
-    puts AsciiCharts::Cartesian.new(data_array, bar: true, hide_zero: true).draw
   end
 
   def pie_plot(
