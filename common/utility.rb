@@ -1,7 +1,6 @@
 require "active_support/all"
 require "ascii_charts"
 require "json"
-require "matplotlib/pyplot"
 require "rainbow"
 require "torch-rb"
 require "tty-logger"
@@ -33,6 +32,8 @@ module Utility
   end
 
   def pyplot(x, y, ylim: [-0.1, 1.1], title: nil)
+    require "matplotlib/pyplot"
+
     plt = Matplotlib::Pyplot
     plt.plot(x.to_a, y.to_a)
     plt.title(title) if title.present?
@@ -41,6 +42,8 @@ module Utility
   end
 
   def imshow(image_array, ylim: [], title: nil)
+    require "matplotlib/pyplot"
+
     plt = Matplotlib::Pyplot
     plt.imshow(image_array)
     plt.title(title) if title.present?
@@ -51,13 +54,11 @@ module Utility
   def block_plot(image_array, title: nil)
     puts Rainbow(title).bright.aqua if title.present?
 
-    filler = "⬛" # "  "
+    filler = "  "
     image_array.each do |row|
       row.each do |value|
-        # print value.nonzero? ? colorize(r: 255, g: 170, b: 51) : colorize
-        # color = value.nonzero? ? [(value.to_f * 255).clamp(0, 255), 0, 0] : [245, 245, 245]
         color = color_map((value.to_f - image_array.min) / (image_array.max - image_array.min + DELTA))
-        print Rainbow(filler).color(*color)
+        print Rainbow(filler).bg(*color)
       end
       print "\n"
     end
