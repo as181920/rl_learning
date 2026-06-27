@@ -4,7 +4,7 @@ plugins:
   - rubocop-performance
 
 AllCops:
-  TargetRubyVersion: 3.1
+  TargetRubyVersion: 3.4
   NewCops: enable
 
 Naming/MethodParameterName:
@@ -33,6 +33,9 @@ Style/Alias:
 
 Layout/LineLength:
   Max: 150
+
+Metrics/MethodLength:
+  Max: 20
 
 Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
