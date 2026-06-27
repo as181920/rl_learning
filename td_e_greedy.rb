@@ -103,7 +103,7 @@ puts UnicodePlot.lineplot(
   scores,
   title: "TD(0): Episode Return",
   xlabel: "Episode",
-  ylabel: "Total Reward",
+  ylabel: "Return",
   ylim: [score_min - score_pad, score_max + score_pad],
   width: 70,
   height: 12
