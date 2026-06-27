@@ -107,4 +107,7 @@ puts UnicodePlot.lineplot(
 _, state_log = ar.test_agent
 state_view = Torch.zeros(16)
 state_view[state_log] = 1
-Utility.block_plot(state_view.type(:int).reshape(4, 4), title: "state log")
+state_view_grid = state_view.type(:int).reshape(4, 4)
+Utility.table_plot(state_view_grid, title: "state log", padding: [0, 1])
+
+# Utility.block_plot(state_view_grid, title: "state log")
