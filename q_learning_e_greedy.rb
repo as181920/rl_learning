@@ -1,5 +1,6 @@
 require "csv"
 require "torch-rb"
+require "unicode_plot"
 require_relative "common/global"
 require_relative "common/utility"
 
@@ -103,10 +104,19 @@ ql.perform
 Utility.table_plot(ql.q_values, title: "Q values")
 
 # plot data
-Utility.pyplot(Array(0..ql.score_log.length.pred), ql.score_log.map(&:to_f))
+puts UnicodePlot.lineplot(
+  Array(0..ql.score_log.length.pred),
+  ql.score_log.map(&:to_f),
+  ylim: [-0.1, 1.1],
+  width: 70,
+  height: 12
+)
 
 # test agent
 _, state_log = ql.test_agent
 state_view = Torch.zeros(16)
 state_view[state_log] = 1
-Utility.block_plot(state_view.type(:int).reshape(4, 4), title: "state log")
+state_view_grid = state_view.type(:int).reshape(4, 4)
+Utility.table_plot(state_view_grid, title: "state log", padding: [0, 1])
+
+# Utility.block_plot(state_view_grid, title: "state log")
