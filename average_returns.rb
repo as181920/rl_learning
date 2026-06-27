@@ -95,10 +95,18 @@ ar.perform
 
 # plot data
 Utility.table_plot(ar.state_values.reshape(4, 4), title: "state values")
+scores = ar.score_log.map(&:to_f)
+score_min = scores.min.to_f
+score_max = scores.max.to_f
+score_pad = [(score_max - score_min) * 0.1, 1.0].max
+
 puts UnicodePlot.lineplot(
-  Array(0..ar.score_log.length.pred),
-  ar.score_log.map(&:to_f),
-  ylim: [-0.1, 1.1],
+  Array(0...scores.length),
+  scores,
+  title: "Average Returns: Episode Return",
+  xlabel: "Episode",
+  ylabel: "Total Reward",
+  ylim: [score_min - score_pad, score_max + score_pad],
   width: 70,
   height: 12
 )

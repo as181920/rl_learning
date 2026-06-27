@@ -104,10 +104,18 @@ ql.perform
 Utility.table_plot(ql.q_values, title: "Q values")
 
 # plot data
+scores = ql.score_log.map(&:to_f)
+score_min = scores.min.to_f
+score_max = scores.max.to_f
+score_pad = [(score_max - score_min) * 0.1, 1.0].max
+
 puts UnicodePlot.lineplot(
-  Array(0..ql.score_log.length.pred),
-  ql.score_log.map(&:to_f),
-  ylim: [-0.1, 1.1],
+  Array(0...scores.length),
+  scores,
+  title: "Q-Learning: Episode Return",
+  xlabel: "Episode",
+  ylabel: "Total Reward",
+  ylim: [score_min - score_pad, score_max + score_pad],
   width: 70,
   height: 12
 )
