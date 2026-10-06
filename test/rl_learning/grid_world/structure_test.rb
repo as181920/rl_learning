@@ -44,6 +44,12 @@ LEARNERS = [
     script: "actor_critic_learning.rb",
     implementation: "actor_critic_learning.rb",
     test_file: "actor_critic_learning_test.rb"
+  },
+  {
+    class_name: :PPOGridWorld,
+    script: "ppo_grid_world.rb",
+    implementation: "ppo_grid_world.rb",
+    test_file: "ppo_grid_world_test.rb"
   }
 ].freeze
 
